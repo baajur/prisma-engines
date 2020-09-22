@@ -18,6 +18,7 @@ tracing = "0.1"
 [dependencies.quaint]
 features = ["single-postgresql", "single-mysql", "single-sqlite", "serde-support"]
 git = "https://github.com/prisma/quaint"
+branch = "select-yolo"
 
 [dev-dependencies]
 anyhow = "1.0.28"
@@ -26,4 +27,4 @@ futures = "0.3"
 pretty_assertions = "0.6"
 test-macros = { path = "../test-macros" }
 test-setup = { path = "../test-setup" }
-tokio = {version = "=0.2.13", features = ["rt-threaded", "macros"]}
+tokio = {version = "0.2.13", features = ["rt-threaded", "macros"]}

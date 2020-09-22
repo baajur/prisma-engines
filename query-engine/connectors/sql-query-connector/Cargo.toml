@@ -13,12 +13,13 @@ rand = "0.7"
 rust_decimal = {git = "https://github.com/pimeys/rust-decimal", branch = "pgbouncer-mode"}
 serde_json = "1.0"
 thiserror = "1.0"
-tokio = "=0.2.13"
+tokio = "0.2.13"
 uuid = "0.8"
 
 [dependencies.quaint]
 features = ["full", "tracing-log"]
 git = "https://github.com/prisma/quaint"
+branch = "select-yolo"
 
 [dependencies.connector-interface]
 package = "query-connector"
