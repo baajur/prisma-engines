@@ -564,7 +564,7 @@ async fn changing_the_type_of_a_field_referenced_by_a_fk_must_work(api: &TestApi
     Ok(())
 }
 
-#[test_each_connector]
+#[test_each_connector(log = "debug")]
 async fn updating_db_name_of_a_scalar_field_must_work(api: &TestApi) {
     let dm1 = r#"
             model A {

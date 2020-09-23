@@ -40,7 +40,7 @@ async fn unapply_must_work(api: &TestApi) -> TestResult {
     api.assert_schema().await?.assert_equals(&result2).map(drop)
 }
 
-#[test_each_connector]
+#[test_each_connector(log = "debug")]
 async fn destructive_change_checks_run_on_unapply_migration(api: &TestApi) -> TestResult {
     let dm1 = r#"
         model Test {

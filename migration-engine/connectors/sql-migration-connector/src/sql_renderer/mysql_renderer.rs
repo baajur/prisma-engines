@@ -201,10 +201,6 @@ impl SqlRenderer for MysqlFlavour {
         }
     }
 
-    fn render_drop_table(&self, table_name: &str) -> Vec<String> {
-        vec![format!("DROP TABLE {}", self.quote(&table_name))]
-    }
-
     fn render_references(&self, foreign_key: &ForeignKey) -> String {
         let referenced_columns = foreign_key
             .referenced_columns

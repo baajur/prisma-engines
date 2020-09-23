@@ -145,10 +145,11 @@ impl DestructiveCheckPlan {
     }
 }
 
-async fn count_rows_in_table(table_name: &str, schema_name: &str, conn: &dyn Queryable) -> SqlResult<i64> {
+async fn count_rows_in_table(table_name: &str, _schema_name: &str, conn: &dyn Queryable) -> SqlResult<i64> {
     use quaint::ast::*;
 
-    let query = Select::from_table((schema_name, table_name)).value(count(asterisk()));
+    // TODO: specialize per database
+    let query = Select::from_table(table_name).value(count(asterisk()));
     let result_set = conn.query(query.into()).await?;
     let rows_count = result_set
         .first()
@@ -173,12 +174,13 @@ async fn count_rows_in_table(table_name: &str, schema_name: &str, conn: &dyn Que
 async fn count_values_in_column(
     column_name: &str,
     table: &str,
-    schema_name: &str,
+    _schema_name: &str,
     conn: &dyn Queryable,
 ) -> SqlResult<i64> {
     use quaint::ast::*;
 
-    let query = Select::from_table((schema_name, table))
+    // TODO: specialize per database
+    let query = Select::from_table(table)
         .value(count(quaint::ast::Column::new(column_name)))
         .so_that(column_name.is_not_null());
 

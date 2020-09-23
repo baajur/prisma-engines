@@ -12,12 +12,6 @@ pub(crate) struct SqliteFlavour {
     pub(super) attached_name: String,
 }
 
-impl SqliteFlavour {
-    pub(crate) fn attached_name(&self) -> &str {
-        &self.attached_name
-    }
-}
-
 #[async_trait::async_trait]
 impl SqlFlavour for SqliteFlavour {
     async fn create_database(&self, database_str: &str) -> ConnectorResult<String> {
@@ -83,7 +77,7 @@ impl SqlFlavour for SqliteFlavour {
         Ok(())
     }
 
-    async fn reset(&self, conn: &dyn Queryable, connection_info: &ConnectionInfo) -> ConnectorResult<()> {
+    async fn reset(&self, _conn: &dyn Queryable, connection_info: &ConnectionInfo) -> ConnectorResult<()> {
         let file_path = connection_info.file_path().unwrap();
 
         std::fs::remove_file(file_path).map_err(|err| {
@@ -94,22 +88,24 @@ impl SqlFlavour for SqliteFlavour {
             )))
         })?;
 
-        catch(
-            connection_info,
-            conn.execute_raw("DETACH ?", &[connection_info.schema_name().into()])
-                .map_err(SqlError::from),
-        )
-        .await?;
+        std::fs::File::create(file_path).expect("failed to truncate sqlite file");
 
-        catch(
-            connection_info,
-            conn.execute_raw(
-                "ATTACH DATABASE ? AS ?",
-                &[file_path.into(), connection_info.schema_name().into()],
-            )
-            .map_err(SqlError::from),
-        )
-        .await?;
+        // catch(
+        //     connection_info,
+        //     conn.execute_raw("DETACH ?", &[connection_info.schema_name().into()])
+        //         .map_err(SqlError::from),
+        // )
+        // .await?;
+
+        // catch(
+        //     connection_info,
+        //     conn.execute_raw(
+        //         "ATTACH DATABASE ? AS ?",
+        //         &[file_path.into(), connection_info.schema_name().into()],
+        //     )
+        //     .map_err(SqlError::from),
+        // )
+        // .await?;
 
         Ok(())
     }

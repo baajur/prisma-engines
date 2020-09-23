@@ -108,7 +108,11 @@ impl TestApi {
 
     /// Render a table name with the required prefixing for use with quaint query building.
     pub fn render_table_name<'a>(&self, table_name: &'a str) -> quaint::ast::Table<'a> {
-        (self.schema_name().to_owned(), table_name.to_owned()).into()
+        if self.is_sqlite() {
+            table_name.into()
+        } else {
+            (self.schema_name().to_owned(), table_name.to_owned()).into()
+        }
     }
 
     /// Create a temporary directory to serve as a test migrations directory.
